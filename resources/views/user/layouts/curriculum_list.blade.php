@@ -20,21 +20,33 @@
         </nav>
     </header>
     
-    <div>
-        <button >＜</button>
-        {{ date('Y年m月') }} スケジュール
-        <button >＞</button>
+        <div class="container">
+        <div class="button-group">
+            <button class="Elementary_sc">小学校1年生</button>    
+            <button class="Elementary_sc">小学校2年生</button>
+             <button class="Elementary_sc">小学校3年生</button>
+              <button class="Elementary_sc">小学校4年生</button>
+               <button class="Elementary_sc">小学校5年生</button>
+                <button class="Elementary_sc">小学校6年生</button>
+                 <button class="Middle_sc">中学校1年生</button>
+                  <button class="Middle_sc">中学校2年生</button>
+                   <button class="Middle_sc">中学校3年生</button>
+                    <button class="High_sc">高校1年生</button>
+                     <button class="High_sc">高校2年生</button>
+                      <button class="High_sc">高校3年生</button>
         </div>
+                   
 
-        
-        <div class="curriculum-list">
-            @foreach ($curriculums as $curriculum)
-                <div class="curriculum-item">
-                    <img src="{{ $curriculum->thumbnail }}" alt="{{ $curriculum->title }}">
-                    <h3>{{ $curriculum->title }}</h3>
-                    <p>日時: {{ $curriculum->delivery_from }} - {{ $curriculum->delivery_to }}</p>
-                </div>
-            @endforeach
+               
+            <div class="curriculum-list" >
+                @foreach ($curriculums as $curriculum)
+                    <div class="curriculum-item">
+                        <img src="{{ $curriculum->thumbnail }}" alt="{{ $curriculum->title }}">
+                        <h3>{{ $curriculum->title }}</h3>
+                        <p>日時: {{ $curriculum->delivery_from }} - {{ $curriculum->delivery_to }}</p>
+                    </div>
+                @endforeach
+            </div>
         </div>
 </body>
 </html>

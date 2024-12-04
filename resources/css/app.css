@@ -50,10 +50,23 @@ h1 {
     text-align: center;
     color: #333;
 }
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start; /* 左寄せに変更 */
+}
 
-ul.curriculum-list {
-    list-style-type: none;
-    padding: 0;
+.button-group {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    /* 幅を小さく設定 */
+    margin-right: 30px;
+    /* 右側に余白を追加 */
+}
+.curriculum-list {
+    display: flex;
+    flex-direction: column;
 }
 
 ul.curriculum-list li {
@@ -73,3 +86,32 @@ ul.curriculum-list li a {
 ul.curriculum-list li a:hover {
     text-decoration: underline;
 } 
+
+.Elementary_sc {
+    background-color: #00bfff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    display: block;
+    text-decoration: none;
+}
+
+.Middle_sc {
+    background-color: #6eee7b;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    display: block;
+    text-decoration: none;
+}
+.High_sc {
+    background-color: #04df1a;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    display: block;
+    text-decoration: none;
+}
