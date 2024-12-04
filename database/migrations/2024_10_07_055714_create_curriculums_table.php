@@ -20,7 +20,7 @@ return new class extends Migration
             $table->longText('description'); // カリキュラム説明文
             $table->mediumText('video_url'); // 動画URL
             $table->tinyInteger('alway_delivery_flg')->default(0); // 常時公開フラグ（デフォルトは0）
-            $table->integer('grade_id'); // クラスID
+            $table->integer('grade_id'); // 学年ID
             $table->timestamps(); // created_at と updated_at
         });
     }
