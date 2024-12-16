@@ -2,7 +2,20 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\Auth\CurriculumController;
+use App\Http\Controllers\Admin\TopController;
 
 
-// カリキュラムリストへのルート
-Route::get('/curriculums', [CurriculumController::class, 'index'])->name('curriculums.index');
+// ユーザー用のルートをグループ化
+Route::prefix('user')->namespace('User')->name('user.')->group(function () {
+    // カリキュラムリストへのルート
+    Route::get('/curriculums_list', [CurriculumController::class, 'index'])->name('curriculums.index');
+});
+// 管理者用のルートをグループ化
+Route::prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
+    Route::get('/top', [TopController::class, 'index'])->name('index');
+    // 他の管理者用ルートをここに追加できます
+});
+
+
+// /topへのルートを追加
+Route::get('/top', [TopController::class, 'index'])->name('top.index');

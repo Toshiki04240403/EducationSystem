@@ -1,5 +1,46 @@
 /* General styles for the curriculum list */
 
+/* .btn-grayクラスのボタンのスタイルを追加 */
+.topbtn {
+    background-color: gray;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 20px 0;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.topbtn:hover {
+    background-color: darkgray;
+}
+
+topheader {
+    background-color: #00defc;
+    padding: 40px 20px;
+    /* ヘッダーの背景色 */
+}
+
+.topbtn-logout {
+    background-color: #00defc;
+    /* ログアウトボタンの背景色 */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 20px 0;
+    margin-left: 30px;
+    cursor: pointer;
+}
+
+.topbtn-logout:hover {
+    background-color: rgb(21, 137, 172);
+    /* ホバー時の色 */
+}
+
 
 
 body {
