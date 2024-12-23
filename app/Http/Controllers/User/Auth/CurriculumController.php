@@ -7,42 +7,60 @@ use App\Models\Curriculum;
 use App\Models\Grade;
 use App\Models\DeliveryTime;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class CurriculumController extends Controller
 {
+    // 授業一覧表示
     public function index(Request $request)
-{
-    $grade = $request->input('grade'); // リクエストから学年を取得
+    {
+        // 学年一覧を取得
+        $grades = Grade::all();
 
-    $curriculums = Curriculum::with('deliveryTimes') // deliveryTimesリレーションをプリロード
-        ->when($grade, function ($query, $grade) {
-            return $query->where('grade_id', $grade);
-        })
-        ->get();
+        // クエリから学年を取得（選択されていない場合は全てを取得）
+        $selectedGradeId = $request->input('grade_id');
 
-    $selectedGrade = $grade; // 現在の学年を保持
+        // カリキュラムデータを取得（学年フィルタリングを適用）
+        $curriculums = Curriculum::with('deliveryTimes')
+            ->when($selectedGradeId, function ($query, $selectedGradeId) {
+                return $query->where('grade_id', $selectedGradeId);
+            })
+            ->get();
 
-    return view('user.layouts.curriculum_list', compact('curriculums', 'selectedGrade'));
-}
+        return view('user.layouts.curriculum_list', compact('curriculums', 'grades', 'selectedGradeId'));
+    }
 
+    // Ajaxリクエスト用: 学年ごとの授業リスト取得
+    public function filterByGrade($gradeId)
+    {
+        try {
+            // 指定された学年のカリキュラムデータを取得
+            $curriculums = Curriculum::with('deliveryTimes')
+                ->where('grade_id', $gradeId)
+                ->get();
 
-    // 新規登録ページの表示
+            // 必要なデータを整形してJSONで返す
+            return response()->json($curriculums->map(function ($curriculum) {
+                return [
+                    'id' => $curriculum->id,
+                    'title' => $curriculum->title ?? 'タイトル未設定',
+                    'thumbnail' => $curriculum->thumbnail,
+                    'delivery_from' => optional($curriculum->deliveryTimes->first())->delivery_from ?? '未設定',
+                    'delivery_to' => optional($curriculum->deliveryTimes->first())->delivery_to ?? '未設定',
+                ];
+            }));
+        } catch (\Exception $e) {
+            Log::error('学年ごとの授業取得エラー: ' . $e->getMessage());
+            return response()->json(['error' => 'データの取得に失敗しました。'], 500);
+        }
+    }
+
+    // 新規登録ページ
     public function create()
     {
-        $grades = Grade::all(); // 学年データを全件取得
-
+        $grades = Grade::all(); // 学年データを取得
         return view('user.layouts.curriculum_create', compact('grades'));
     }
-
-    // 授業編集ページの表示
-    public function edit($curriculumId)
-    {
-        $curriculum = Curriculum::findOrFail($curriculumId);
-        $deliveryTime = DeliveryTime::where('curriculums_id', $curriculumId)->firstOrFail(); // 最初の配信日時を取得
-    
-        return view('user.layouts.delivery_edit', compact('curriculum', 'delivery_times'));
-    }
-    
 
     // 新規登録処理
     public function store(Request $request)
@@ -53,23 +71,38 @@ class CurriculumController extends Controller
             'description' => 'nullable|string',
             'video_url' => 'nullable|url',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'alway_delivery_flg' => 'nullable|boolean',
+            'alway_delivery_flg' => 'required|boolean',  
         ]);
 
+        // 新しいカリキュラムのインスタンスを作成
         $curriculum = new Curriculum($request->only(['title', 'grade_id', 'description', 'video_url']));
-        $curriculum->alway_delivery_flg = $request->boolean('alway_delivery_flg');
 
+        // alway_delivery_flg を true/false から 0/1 に変換
+        $curriculum->alway_delivery_flg = $request->boolean('alway_delivery_flg') ? 1 : 0;
+
+        // サムネイルファイルがアップロードされている場合
         if ($request->hasFile('thumbnail')) {
             $path = $request->file('thumbnail')->store('public/thumbnails');
             $curriculum->thumbnail = basename($path);
         }
 
+        // データベースに保存
         $curriculum->save();
 
+        // 成功メッセージと共にインデックスページにリダイレクト
         return redirect()->route('curriculum.index')->with('success', '新しい授業が登録されました。');
     }
 
-    // 授業データの更新処理
+    // 授業編集ページ
+    public function edit($id)
+    {
+        $curriculum = Curriculum::findOrFail($id);
+        $grades = Grade::all();
+        $deliveryTime = DeliveryTime::where('curriculums_id', $id)->first();  // idを使用
+
+        return view('user.layouts.curriculum_edit', compact('curriculum', 'grades', 'deliveryTime'));
+    }
+    // 授業更新処理
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -78,18 +111,20 @@ class CurriculumController extends Controller
             'description' => 'nullable|string',
             'video_url' => 'nullable|url',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'alway_delivery_flg' => 'nullable|boolean',
+            'alway_delivery_flg' => 'nullable|boolean|in:0,1', 
         ]);
 
         $curriculum = Curriculum::findOrFail($id);
         $curriculum->fill($request->only(['title', 'grade_id', 'description', 'video_url']));
-        $curriculum->alway_delivery_flg = $request->boolean('alway_delivery_flg');
+        $curriculum->alway_delivery_flg = $request->boolean('alway_delivery_flg') ? 1 : 0;
 
+        // サムネイルファイルがアップロード
         if ($request->hasFile('thumbnail')) {
             $path = $request->file('thumbnail')->store('public/thumbnails');
             $curriculum->thumbnail = basename($path);
         }
 
+        // データベースに保存
         $curriculum->save();
 
         return redirect()->route('curriculum.index')->with('success', '授業が更新されました。');
@@ -98,28 +133,28 @@ class CurriculumController extends Controller
     // 配信日時保存処理
     public function saveDeliveryTime(Request $request, $curriculumId)
     {
-        $request->validate([
-            'delivery_from_date' => 'required|date',            // 配信開始日
-            'delivery_from_time' => 'required|date_format:H:i', // 配信開始時間
-            'delivery_to_date'   => 'required|date|after_or_equal:delivery_from_date', // 配信終了日
-            'delivery_to_time'   => 'required|date_format:H:i', // 配信終了時間
+        $validatedData = $request->validate([
+            'delivery_from_date' => 'required|date|before_or_equal:delivery_to_date',
+            'delivery_from_time' => 'required|date_format:H:i',
+            'delivery_to_date'   => 'required|date|after_or_equal:delivery_from_date',
+            'delivery_to_time'   => 'required|date_format:H:i',
         ]);
 
-        $curriculum = Curriculum::findOrFail($curriculumId); // curriculum_id の存在を確認
-
-        $deliveryFrom = $request->input('delivery_from_date') . ' ' . $request->input('delivery_from_time');
-        $deliveryTo = $request->input('delivery_to_date') . ' ' . $request->input('delivery_to_time');
-
-        $deliveryTime = new DeliveryTime();
-        $deliveryTime->curriculum_id = $curriculumId; // 外部キーに対応
-        $deliveryTime->delivery_from = $deliveryFrom;
-        $deliveryTime->delivery_to = $deliveryTo;
+        $deliveryFrom = $validatedData['delivery_from_date'] . ' ' . $validatedData['delivery_from_time'];
+        $deliveryTo = $validatedData['delivery_to_date'] . ' ' . $validatedData['delivery_to_time'];
 
         try {
-            $deliveryTime->save();
+            $curriculum = Curriculum::findOrFail($curriculumId);
+
+            DeliveryTime::updateOrCreate(
+                ['curriculums_id' => $curriculumId], // 外部キーとしてcurriculums_idを使用
+                ['delivery_from' => $deliveryFrom, 'delivery_to' => $deliveryTo]
+            );
 
             return redirect()->route('curriculum.edit', $curriculumId)->with('success', '配信日時が保存されました。');
         } catch (\Exception $e) {
+            Log::error('配信日時保存エラー: ' . $e->getMessage());
+
             return redirect()->route('curriculum.edit', $curriculumId)->with('error', '配信日時の保存に失敗しました。');
         }
     }

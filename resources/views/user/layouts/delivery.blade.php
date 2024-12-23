@@ -1,86 +1,76 @@
-<!-- 配信日時設定ページ -->
 @extends('layouts.app')
 
 @section('content')
-
 <div class="container">
-    <a href="{{ route('curriculum.index') }}" class="btn btn-link">&larr; 戻る</a>
-    <h2>配信日時設定</h2>
-    <h4>{{ $curriculum->title ?? '授業タイトルが入る' }}</h4> <!-- 授業タイトルを動的に表示 -->
+    <h2>{{ $curriculum->name }} 配信日時設定</h2>
 
-    <form method="POST" action="{{ route('delivery.store', $curriculum->id ?? '') }}">
+    <!-- 授業タイトル表示 -->
+    <p class="fw-bold fs-5">{{ $curriculum->title ?? '授業タイトルが入る' }}</p>
+
+    <form action="{{ isset($deliveryTime) ? route('delivery.update', ['curriculumId' => $curriculum->id, 'deliveryId' => $deliveryTime->id]) : route('delivery.store', ['curriculumId' => $curriculum->id]) }}" method="POST">
         @csrf
-        <div id="schedule-fields">
-            <!-- 初期フィールド -->
-            <div class="row align-items-center mb-3 schedule-field">
-                <div class="col-md-3">
-                    <input type="date" name="start_date[]" class="form-control" required placeholder="年/月/日">
-                </div>
-                <div class="col-md-2">
-                    <input type="time" name="start_time[]" class="form-control" required placeholder="時:分">
-                </div>
-                <div class="col-md-1 text-center">
-                    <span>～</span>
-                </div>
-                <div class="col-md-3">
-                    <input type="date" name="end_date[]" class="form-control" required placeholder="年/月/日">
-                </div>
-                <div class="col-md-2">
-                    <input type="time" name="end_time[]" class="form-control" required placeholder="時:分">
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-danger remove-field">&minus;</button>
-                </div>
+        @if(isset($deliveryTime))
+            @method('PUT')
+        @endif
+
+        <div id="delivery-times-container">
+            @forelse ($deliveryTimes as $index => $deliveryTime)
+            <div class="delivery-time-row d-flex align-items-center mb-2">
+                <input type="date" class="form-control date-input me-2" name="delivery_times[{{ $index }}][from_date]"
+                       value="{{ old("delivery_times.$index.from_date", $deliveryTime->delivery_from ? \Carbon\Carbon::parse($deliveryTime->delivery_from)->format('Y-m-d') : '') }}" required>
+                <input type="time" class="form-control time-input me-2" name="delivery_times[{{ $index }}][from_time]"
+                       value="{{ old("delivery_times.$index.from_time", $deliveryTime->delivery_from ? \Carbon\Carbon::parse($deliveryTime->delivery_from)->format('H:i') : '') }}" required>
+                <span class="me-2">～</span>
+                <input type="date" class="form-control date-input me-2" name="delivery_times[{{ $index }}][to_date]"
+                       value="{{ old("delivery_times.$index.to_date", $deliveryTime->delivery_to ? \Carbon\Carbon::parse($deliveryTime->delivery_to)->format('Y-m-d') : '') }}" required>
+                <input type="time" class="form-control time-input me-2" name="delivery_times[{{ $index }}][to_time]"
+                       value="{{ old("delivery_times.$index.to_time", $deliveryTime->delivery_to ? \Carbon\Carbon::parse($deliveryTime->delivery_to)->format('H:i') : '') }}" required>
+                <button type="button" class="btn btn-danger remove-row">−</button>
             </div>
+            @empty
+            <p class="text-muted">配信日時が登録されていません。新しい日時を追加してください。</p>
+            @endforelse
         </div>
-        <!-- フィールド追加ボタン -->
-        <button type="button" class="btn btn-success mb-3" id="add-field">＋</button>
-        <!-- フォーム送信ボタン -->
-        <button type="submit" class="btn btn-primary">登録</button>
+
+        <button type="button" id="add-row-button" class="btn btn-success mt-3">＋</button>
+
+        <button type="submit" class="btn btn-primary mt-3">登録</button>
     </form>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const scheduleFields = document.getElementById('schedule-fields');
-        const addFieldButton = document.getElementById('add-field');
+    document.addEventListener('DOMContentLoaded', function () {
+        const container = document.getElementById('delivery-times-container');
+        const addButton = document.getElementById('add-row-button');
 
-        // フィールドテンプレートを生成
-        function getFieldTemplate() {
-            return `
-                <div class="row align-items-center mb-3 schedule-field">
-                    <div class="col-md-3">
-                        <input type="date" name="start_date[]" class="form-control" required placeholder="年/月/日">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="time" name="start_time[]" class="form-control" required placeholder="時:分">
-                    </div>
-                    <div class="col-md-1 text-center">
-                        <span>～</span>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="date" name="end_date[]" class="form-control" required placeholder="年/月/日">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="time" name="end_time[]" class="form-control" required placeholder="時:分">
-                    </div>
-                    <div class="col-md-1">
-                        <button type="button" class="btn btn-danger remove-field">&minus;</button>
-                    </div>
-                </div>`;
+        // 新しい行を追加する関数
+        function addNewRow() {
+            const index = container.querySelectorAll('.delivery-time-row').length; // 現在の行数を取得
+            const newRow = document.createElement('div');
+            newRow.classList.add('delivery-time-row', 'd-flex', 'align-items-center', 'mb-2');
+            newRow.innerHTML = `
+                <input type="date" class="form-control date-input me-2" name="delivery_times[${index}][from_date]" required>
+                <input type="time" class="form-control time-input me-2" name="delivery_times[${index}][from_time]" required>
+                <span class="me-2">～</span>
+                <input type="date" class="form-control date-input me-2" name="delivery_times[${index}][to_date]" required>
+                <input type="time" class="form-control time-input me-2" name="delivery_times[${index}][to_time]" required>
+                <button type="button" class="btn btn-danger remove-row">−</button>
+            `;
+
+            // 削除ボタンにイベントリスナー追加
+            newRow.querySelector('.remove-row').addEventListener('click', () => newRow.remove());
+
+            container.appendChild(newRow);
         }
 
-        // 新しいフィールドを追加
-        addFieldButton.addEventListener('click', () => {
-            scheduleFields.insertAdjacentHTML('beforeend', getFieldTemplate());
-        });
+        // 行追加ボタンのクリックイベント
+        addButton.addEventListener('click', addNewRow);
 
-        // フィールドを削除
-        scheduleFields.addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-field')) {
-                const field = e.target.closest('.schedule-field');
-                if (field) field.remove();
-            }
+        // 初期表示時、削除ボタンのイベントリスナー設定
+        document.querySelectorAll('.remove-row').forEach(button => {
+            button.addEventListener('click', function () {
+                button.parentElement.remove();
+            });
         });
     });
 </script>

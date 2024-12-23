@@ -1,128 +1,169 @@
-/* 戻るリンク */
-.back-link a {
-    text-decoration: none;
-    font-size: 16px;
+/* グローバル設定 */
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
-/* 管理ボタン */
-.management-buttons {
-    display: flex;
-    justify-content: flex-start;
+/* ヘッダー */
+header {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
     margin-bottom: 20px;
 }
 
-.management-buttons a {
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+header .management-buttons a {
+    color: #ffffff;
     margin-right: 10px;
-    color: white;
 }
 
-.management-buttons a:first-child {
-    background-color: #17a2b8; /* 授業管理ボタン */
-}
-
-.management-buttons a:nth-child(2) {
-    background-color: #007bff; /* お知らせ管理ボタン */
-}
-
-.management-buttons a:nth-child(3) {
-    background-color: #28a745; /* バナー管理ボタン */
-}
-.management-buttons a:last-child {
-    background-color: gray; /* ログアウト管理ボタン */
-}
-/* タイトル */
-h1 {
-    text-align: left;
-    font-size: 24px;
-    margin: 20px 0;
-}
-
-/* 現在の学年表示 */
-.selected-grade {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.selected-grade span {
-    font-size: 20px;
-    padding: 10px 20px;
-    background-color: #e3f2fd;
-    border-radius: 5px;
-}
-
-/* 新規登録ボタン */
-.new-registration {
-    text-align: left;
-    margin-bottom: 20px;
-}
-
-.new-registration a {
-    text-decoration: none;
-    background-color: #17a2b8;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-}
-
-/* サイドバー */
-.sidebar h3 {
-    margin-bottom: 10px;
-}
-
-.sidebar form {
-    margin-bottom: 10px;
-}
-
-.sidebar button {
-    width: 100%;
-    background-color: #d1ecf1;
+header .management-buttons .btn-danger {
+    background-color: #dc3545;
     border: none;
-    padding: 10px;
-    border-radius: 5px;
+}
+
+/* 学年ボタン */
+.grade-button {
+    background-color: #17a2b8;
+    color: #ffffff;
+    border: none;
     font-size: 16px;
-    text-align: left;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.grade-button:hover {
+    background-color: #138496;
 }
 
 /* 授業カード */
 .card {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: #ffffff;
     margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
 }
 
 .card img {
     width: 100%;
     height: 150px;
     object-fit: cover;
-    border-radius: 5px;
+    border-bottom: 1px solid #ddd;
 }
 
-.card h4 {
-    margin-top: 10px;
+.card-body {
+    padding: 15px;
+    text-align: center;
+}
+
+.card-title {
     font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
 }
 
-.card p {
+.card-text {
     font-size: 14px;
+    margin-bottom: 15px;
     color: #555;
 }
 
-.card a {
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+.card .btn {
     font-size: 14px;
-    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin-right: 5px;
 }
 
-.card a:first-child {
-    background-color: #17a2b8; /* 授業内容編集 */
+.card .btn-info {
+    background-color: #17a2b8;
+    border: none;
+    color: #ffffff;
 }
 
-.card a:last-child {
-    background-color: #28a745; /* 配信登録編集 */
+.card .btn-info:hover {
+    background-color: #138496;
+}
+
+/* サイドバー */
+.sidebar {
+    background-color: #ffffff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* 戻るリンク */
+.back-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+}
+
+/* 新規登録ボタン */
+.new-registration a {
+    background-color: #28a745;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.new-registration a:hover {
+    background-color: #218838;
+    text-decoration: none;
+}
+
+/* 授業カードの制限（6個まで表示） */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.row .card:nth-child(n+7) {
+    display: none; /* 7番目以降を非表示にする */
+}
+
+/* メディアクエリ（レスポンシブ対応） */
+@media (max-width: 768px) {
+    .card {
+        width: 100%;
+    }
+
+    .grade-button {
+        font-size: 14px;
+    }
+
+    .new-registration a {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
 }
