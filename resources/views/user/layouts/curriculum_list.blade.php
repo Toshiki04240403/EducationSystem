@@ -19,22 +19,15 @@
             </ul>
         </nav>
     </header>
-    
-        <div class="container">
+
+       <div class="container">
+        <div class="flex-container">
         <div class="button-group">
-            <button class="Elementary_sc">小学校1年生</button>    
-            <button class="Elementary_sc">小学校2年生</button>
-             <button class="Elementary_sc">小学校3年生</button>
-              <button class="Elementary_sc">小学校4年生</button>
-               <button class="Elementary_sc">小学校5年生</button>
-                <button class="Elementary_sc">小学校6年生</button>
-                 <button class="Middle_sc">中学校1年生</button>
-                  <button class="Middle_sc">中学校2年生</button>
-                   <button class="Middle_sc">中学校3年生</button>
-                    <button class="High_sc">高校1年生</button>
-                     <button class="High_sc">高校2年生</button>
-                      <button class="High_sc">高校3年生</button>
+            @foreach($grades as $grade)
+                <button class="grade-button">{{ $grade->name }}</button>
+            @endforeach
         </div>
+       </div>
                    
 
                

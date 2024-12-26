@@ -1,5 +1,21 @@
 /* General styles for the curriculum list */
 
+.grade-button {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    
+}
+
+.grade-button:hover {
+    background-color: #45a049;
+}
+
+
+
 /* .btn-grayクラスのボタンのスタイルを追加 */
 .topbtn {
     background-color: gray;

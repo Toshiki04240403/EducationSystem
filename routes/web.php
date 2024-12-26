@@ -19,3 +19,4 @@ Route::prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
 
 // /topへのルートを追加
 Route::get('/top', [TopController::class, 'index'])->name('top.index');
+Route::get('/curriculums_list', [CurriculumController::class, 'index'])->name('curriculums.index');
