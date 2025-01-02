@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
 <div class="container">
@@ -7,7 +7,7 @@
     <!-- 授業タイトル表示 -->
     <p class="fw-bold fs-5">{{ $curriculum->title ?? '授業タイトルが入る' }}</p>
 
-    <form action="{{ isset($deliveryTime) ? route('delivery.update', ['curriculumId' => $curriculum->id, 'deliveryId' => $deliveryTime->id]) : route('delivery.store', ['curriculumId' => $curriculum->id]) }}" method="POST">
+    <form action="{{ isset($deliveryTime) ? route('admin.delivery.update', ['curriculumId' => $curriculum->id, 'deliveryId' => $deliveryTime->id]) : route('admin.delivery.store', ['curriculumId' => $curriculum->id]) }}" method="POST">
         @csrf
         @if(isset($deliveryTime))
             @method('PUT')

@@ -1,13 +1,13 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
 <header>
     <div class="container">
         <div class="management-buttons d-flex justify-content-between align-items-center mb-4">
             <div>
-                <a href="{{ route('curriculum.index') }}" class="btn btn-info me-2">授業管理</a>
-                <a href="{{ route('article.list') }}" class="btn btn-primary me-2">お知らせ管理</a>
-                <a href="{{ route('banner.edit') }}" class="btn btn-success me-2">バナー管理</a>
+                <a href="{{ route('admin.curriculum.index') }}" class="btn btn-info me-2">授業管理</a>
+                <a href="{{ route('admin.article.list') }}" class="btn btn-primary me-2">お知らせ管理</a>
+                <a href="{{ route('admin.banner.edit') }}" class="btn btn-success me-2">バナー管理</a>
             </div>
             <a href="{{ route('logout') }}" class="btn btn-danger" 
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
@@ -16,7 +16,7 @@
 </header>
 
 <div class="container">
-    <a href="{{ route('curriculum.index') }}" class="btn btn-link">&lt; 戻る</a>
+    <a href="{{ route('admin.curriculum.index') }}" class="btn btn-link">&lt; 戻る</a>
     <h2>{{ isset($curriculum) ? '授業設定' : '新規授業登録' }}</h2>
     <link rel="stylesheet" href="{{ asset('css/create.css') }}">
 
@@ -39,7 +39,7 @@
     @endif
 
     <!-- フォームのアクションを動的に設定 -->
-    <form action="{{ isset($curriculum) ? route('curriculum.update', $curriculum->id) : route('curriculum.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ isset($curriculum) ? route('admin.curriculum.update', $curriculum->id) : route('admin.curriculum.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @if(isset($curriculum))
             @method('PUT')
@@ -93,13 +93,10 @@
 
         <!-- 常時公開 -->
         <div class="form-check mt-3">
-            <input type="checkbox" name="alway_delivery_flg" id="alway_delivery_flg" class="form-check-input" 
-                value="1" {{ old('alway_delivery_flg', isset($curriculum) && $curriculum->alway_delivery_flg == 1 ? 'checked' : '') }}>
-            <label for="alway_delivery_flg" class="form-check-label">常時公開</label>
-        </div>
+        <input type="checkbox" name="alway_delivery_flg" id="alway_delivery_flg" class="form-check-input"
+    value="1" {{ (old('alway_delivery_flg') ?? $curriculum->alway_delivery_flg ?? 0) == 1 ? 'checked' : '' }}>
+<label for="alway_delivery_flg" class="form-check-label">常時公開</label>
 
-        <!-- hidden input to ensure 'false' is sent when checkbox is unchecked -->
-        <input type="hidden" name="alway_delivery_flg" value="0">
 
         <!-- 登録ボタン -->
         <button type="submit" class="btn btn-primary mt-3">{{ isset($curriculum) ? '更新' : '登録' }}</button>

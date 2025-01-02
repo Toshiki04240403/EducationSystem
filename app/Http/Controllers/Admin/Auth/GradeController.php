@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\User\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
 use Illuminate\Http\Request;
 use App\Models\Grade;
