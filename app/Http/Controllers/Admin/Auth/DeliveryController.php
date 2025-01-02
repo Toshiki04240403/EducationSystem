@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
 use Illuminate\Http\Request;
 use App\Models\Curriculum;
@@ -22,11 +22,11 @@ class DeliveryController extends Controller
             $deliveryTimes = $curriculum->deliveryTimes;
 
             // ビューに渡す
-            return view('user.layouts.delivery', compact('curriculum', 'deliveryTimes'));
+            return view('admin.layouts.delivery', compact('curriculum', 'deliveryTimes'));
         } catch (\Exception $e) {
             Log::error('配信日時編集フォームの取得に失敗しました: ', ['error' => $e->getMessage()]);
             return redirect()
-                ->route('curriculum.index')
+                ->route('admin.curriculum.index')
                 ->with('error', 'カリキュラム情報の取得に失敗しました。');
         }
     }
@@ -53,7 +53,7 @@ class DeliveryController extends Controller
                 }
             });
 
-            return redirect()->route('curriculum.index')->with('success', '新しい配信日時が登録されました。');
+            return redirect()->route('admin.curriculum.index')->with('success', '新しい配信日時が登録されました。');
         } catch (\Exception $e) {
             Log::error('新しい配信日時の登録に失敗しました: ', ['error' => $e->getMessage()]);
             return redirect()->back()->with('error', '配信日時の登録に失敗しました。再度お試しください。');
@@ -87,7 +87,7 @@ class DeliveryController extends Controller
                 }
             });
 
-            return redirect()->route('curriculum.index')->with('success', '配信日時が更新されました。');
+            return redirect()->route('admin.curriculum.index')->with('success', '配信日時が更新されました。');
         } catch (\Exception $e) {
             Log::error('配信日時の更新に失敗しました: ', ['error' => $e->getMessage()]);
             return redirect()->back()->with('error', '配信日時の更新に失敗しました。再度お試しください。');

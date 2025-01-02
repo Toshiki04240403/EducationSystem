@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
 use Illuminate\Http\Request;
 use App\Models\Curriculum;
@@ -27,7 +27,7 @@ class CurriculumController extends Controller
             })
             ->get();
 
-        return view('user.layouts.curriculum_list', compact('curriculums', 'grades', 'selectedGradeId'));
+        return view('admin.layouts.curriculum_list', compact('curriculums', 'grades', 'selectedGradeId'));
     }
 
     // Ajaxリクエスト用: 学年ごとの授業リスト取得
@@ -59,7 +59,7 @@ class CurriculumController extends Controller
     public function create()
     {
         $grades = Grade::all(); // 学年データを取得
-        return view('user.layouts.curriculum_create', compact('grades'));
+        return view('admin.layouts.curriculum_create', compact('grades'));
     }
 
     // 新規登録処理
@@ -90,7 +90,7 @@ class CurriculumController extends Controller
         $curriculum->save();
 
         // 成功メッセージと共にインデックスページにリダイレクト
-        return redirect()->route('curriculum.index')->with('success', '新しい授業が登録されました。');
+        return redirect()->route('admin.curriculum.index')->with('success', '新しい授業が登録されました。');
     }
 
     // 授業編集ページ
@@ -100,7 +100,7 @@ class CurriculumController extends Controller
         $grades = Grade::all();
         $deliveryTime = DeliveryTime::where('curriculums_id', $id)->first();  // idを使用
 
-        return view('user.layouts.curriculum_edit', compact('curriculum', 'grades', 'deliveryTime'));
+        return view('admin.layouts.curriculum_edit', compact('curriculum', 'grades', 'deliveryTime'));
     }
     // 授業更新処理
     public function update(Request $request, $id)
@@ -127,7 +127,7 @@ class CurriculumController extends Controller
         // データベースに保存
         $curriculum->save();
 
-        return redirect()->route('curriculum.index')->with('success', '授業が更新されました。');
+        return redirect()->route('admin.curriculum.index')->with('success', '授業が更新されました。');
     }
 
     // 配信日時保存処理
@@ -151,11 +151,11 @@ class CurriculumController extends Controller
                 ['delivery_from' => $deliveryFrom, 'delivery_to' => $deliveryTo]
             );
 
-            return redirect()->route('curriculum.edit', $curriculumId)->with('success', '配信日時が保存されました。');
+            return redirect()->route('admin.curriculum.edit', $curriculumId)->with('success', '配信日時が保存されました。');
         } catch (\Exception $e) {
             Log::error('配信日時保存エラー: ' . $e->getMessage());
 
-            return redirect()->route('curriculum.edit', $curriculumId)->with('error', '配信日時の保存に失敗しました。');
+            return redirect()->route('admin.curriculum.edit', $curriculumId)->with('error', '配信日時の保存に失敗しました。');
         }
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('title', '授業一覧')
 
@@ -9,9 +9,9 @@
     <div class="container">
         <div class="management-buttons d-flex justify-content-between align-items-center mb-4">
             <div>
-                <a href="{{ route('curriculum.index') }}" class="btn btn-info me-2">授業管理</a>
-                <a href="{{ route('article.list') }}" class="btn btn-primary me-2">お知らせ管理</a>
-                <a href="{{ route('banner.edit') }}" class="btn btn-success me-2">バナー管理</a>
+                <a href="{{ route('admin.curriculum.index') }}" class="btn btn-info me-2">授業管理</a>
+                <a href="{{ route('admin.article.list') }}" class="btn btn-primary me-2">お知らせ管理</a>
+                <a href="{{ route('admin.banner.edit') }}" class="btn btn-success me-2">バナー管理</a>
             </div>
             <a href="{{ route('logout') }}" 
                class="btn btn-danger" 
@@ -23,7 +23,7 @@
 <div class="container">
     <!-- 戻るリンク -->
     <div class="back-link mb-4">
-        <a href="{{ route('curriculum.index') }}" class="btn btn-link">← 戻る</a>
+        <a href="{{ route('admin.curriculum.index') }}" class="btn btn-link">← 戻る</a>
     </div>
 
     <!-- タイトル -->
@@ -31,7 +31,7 @@
 
     <!-- 新規登録ボタン -->
     <div class="new-registration mb-4">
-        <a href="{{ route('curriculum.create') }}" class="btn btn-info">新規登録</a>
+        <a href="{{ route('admin.curriculum.create') }}" class="btn btn-info">新規登録</a>
     </div>
 
     <!-- 学年選択 -->
@@ -78,13 +78,13 @@
                                 @endif
                                 <div class="text-center">
                                     <!-- 授業内容編集ボタン -->
-                                    <a href="{{ route('curriculum.edit', ['id' => $curriculum->id]) }}" 
+                                    <a href="{{ route('admin.curriculum.edit', ['id' => $curriculum->id]) }}" 
                                        class="btn btn-info btn-sm mt-2">
                                         授業内容編集
                                     </a>
 
                                     <!-- 配信日時編集ボタン -->
-                                    <a href="{{ route('delivery.edit', ['curriculumId' => $curriculum->id]) }}" 
+                                    <a href="{{ route('admin.delivery.edit', ['curriculumId' => $curriculum->id]) }}" 
                                        class="btn btn-secondary btn-sm mt-2">
                                         配信日時編集
                                     </a>
@@ -111,7 +111,7 @@ $(document).on('click', '.grade-button', function () {
 
     // 非同期リクエスト
     $.ajax({
-        url: `/grades/${grade}`, // LaravelのルートURLを呼び出す
+        url: `/admin/grades/${grade}`, // LaravelのルートURLを呼び出す
         method: 'GET',
         success: function (data) {
             const $classList = $('#class-list');
@@ -139,11 +139,11 @@ $(document).on('click', '.grade-button', function () {
                                     <p class="card-text">
                                         配信日時: ${deliveryFrom} 〜 ${deliveryTo}
                                     </p>
-                                    <a href="/curriculums/curriculum/${item.id}/edit" 
+                                    <a href="/admin/curriculums/${item.id}/edit" 
                                        class="btn btn-info btn-sm">
                                        授業内容編集
                                     </a>
-                                    <a href="/curriculums/${item.id}/delivery/edit" 
+                                    <a href="/admin/curriculums/${item.id}/delivery/edit" 
                                        class="btn btn-secondary btn-sm mt-2">
                                        配信日時編集
                                     </a>
