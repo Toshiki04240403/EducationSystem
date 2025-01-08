@@ -1,17 +1,46 @@
 /* General styles for the curriculum list */
 
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-group {
+    flex: 3;
+    margin-right: 20px;
+}
+
+.curriculum-list {
+    flex: 3;
+}
+
 .grade-button {
     padding: 10px 20px;
     margin: 5px;
-    background-color: #4CAF50;
+    background-color: #47bd4b;
     color: white;
     border: none;
     cursor: pointer;
-    
 }
 
 .grade-button:hover {
-    background-color: #45a049;
+    background-color: #2a802e;
+}
+
+/* 各グレードのボタンのスタイルを追加 */
+.grade-1 {
+    background-color: #FF5733;
+    /* 赤色 */
+}
+
+.grade-2 {
+    background-color: #226987;
+    /* 青色 */
+}
+
+.grade-3 {
+    background-color: #28d448;
+    /* 緑色 */
 }
 
 
