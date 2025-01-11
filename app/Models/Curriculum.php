@@ -23,4 +23,10 @@ class Curriculum extends Model
             ->orWhereMonth('delivery_to', $month)
             ->get();
     }
+
+    // リレーションの設定
+    public function deliveryTimes()
+    {
+        return $this->hasMany(DeliveryTime::class, 'curriculums_id');
+    }
 }

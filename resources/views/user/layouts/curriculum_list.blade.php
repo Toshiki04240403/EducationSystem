@@ -10,7 +10,7 @@
     <header>
         <nav>
             <ul>
-                <li><a href="{{ route('curriculums.index') }}">時間割</a></li>
+                <li><a href="{{ route('show.curriculum.list') }}">時間割</a></li>
                 <li><a href="/progress">授業進捗</a></li>
                 <li><a href="/profile">プロフィール設定</a></li>
                 <li><a href="/logout">ログアウト</a></li>
@@ -18,11 +18,13 @@
         </nav>
     </header>
     <a href="/back">←戻る</a>
-    <div class="derivery-time">
-                <button>◀</button>
-                <p>〇〇年〇〇月スケジュール</p>
-                <button>▶</button>
-    </div>
+
+        <div class="delivery-time">
+            <button id="prevMonth">◀</button>
+            <p id="currentDate">〇〇年〇〇月スケジュール</p>
+            <button id="nextMonth">▶</button>
+            <p id="currentGrade" class="{{ $grades->first()->name }}">{{ $grades->first()->name }}</p>
+        </div>
     
     <div class="container">
         <div class="flex-container">
@@ -54,22 +56,85 @@
                             break;
                         }
                     @endphp
-                    <button class="{{ $buttonClass }}">{{ $grade->name }}</button>
-                @endforeach
+                    <button class="{{ $buttonClass }}" data-grade-id="{{ $grade->id }}">{{ $grade->name }}</button>
+                    @endforeach
             </div>
             
                 
 
-            <div class="curriculum-list">
-                @foreach ($curriculums as $curriculum)
-                    <div class="curriculum-item">
-                        <img src="{{ $curriculum->thumbnail }}" alt="{{ $curriculum->title }}">
-                        <h3>{{ $curriculum->title }}</h3>
-                        <p>日時: {{ $curriculum->delivery_from }} - {{ $curriculum->delivery_to }}</p>
-                    </div>
-                @endforeach
-            </div>
+           <div class="curriculum-list">
+    @foreach ($curriculums as $curriculum)
+        <div class="curriculum-item" data-grade="{{ $curriculum->grade_id }}">
+            <img src="{{ asset('images/' . $curriculum->thumbnail) }}" alt="{{ $curriculum->title }}">
+            <h3>{{ $curriculum->title }}</h3>
+            @foreach ($curriculum->deliveryTimes as $deliveryTime)
+                <p>日時: {{ $deliveryTime->delivery_from }} - {{ $deliveryTime->delivery_to }}</p>
+            @endforeach
         </div>
+    @endforeach
+</div>
+        
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentDateElement = document.getElementById('currentDate');
+            const prevMonthButton = document.getElementById('prevMonth');
+            const nextMonthButton = document.getElementById('nextMonth');
+            const currentGradeElement = document.getElementById('currentGrade');
+            const gradeButtons = document.querySelectorAll('.grade-button');
+            const curriculumItems = document.querySelectorAll('.curriculum-item');
+
+            let currentDate = new Date();
+            let currentGradeIndex = 0;
+            const grades = @json($grades->pluck('name')); // gradesテーブルのnameカラムをJavaScriptに渡す
+
+            function updateDateDisplay() {
+                const year = currentDate.getFullYear();
+                const month = currentDate.getMonth() + 1; // 月は0から始まるので+1する
+                currentDateElement.textContent = `${year}年${month}月スケジュール`;
+            }
+
+            function updateGradeDisplay() {
+                currentGradeElement.textContent = grades[currentGradeIndex];
+                gradeButtons.forEach(button => {
+                if (button.textContent === grades[currentGradeIndex]) {
+                currentGradeElement.className = button.className;
+                }
+            });
+
+                // カリキュラムのフィルタリング
+                const selectedGradeId = gradeButtons[currentGradeIndex].dataset.gradeId;
+                curriculumItems.forEach(item => {
+                if (item.dataset.grade == selectedGradeId) {
+                    item.style.display = 'block';
+                } else {
+                item.style.display = 'none';
+            }
+    });
+}
+
+            gradeButtons.forEach((button, index) => {
+                button.addEventListener('click', function() {
+                    currentGradeIndex = index;
+                    updateGradeDisplay();
+                });
+            });
+
+            prevMonthButton.addEventListener('click', function() {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                updateDateDisplay();
+            });
+
+            nextMonthButton.addEventListener('click', function() {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                updateDateDisplay();
+            });
+
+            // 初期表示
+            updateDateDisplay();
+            updateGradeDisplay();
+        });
+    </script>
 </body>
 </html>

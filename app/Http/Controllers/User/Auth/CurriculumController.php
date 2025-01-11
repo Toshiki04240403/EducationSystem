@@ -11,10 +11,13 @@ use App\Models\Grade;
 class CurriculumController extends Controller
 {
     // 時間割ページの表示
-    public function index()
+    public function showCurriculumList()
     {
         // カリキュラムのリストを取得
         $curriculums = Curriculum::all();
+
+        // カリキュラムと関連する配信時間を取得
+        $curriculums = Curriculum::with('deliveryTimes')->get();
         
        
         // gradesテーブルからデータを取得

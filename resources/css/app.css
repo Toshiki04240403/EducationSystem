@@ -1,3 +1,64 @@
+
+/* curriculum-listのスタイル */
+.curriculum-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    /* ブロック間のスペース */
+}
+
+.curriculum-item {
+    flex: 1 1 calc(33.333% - 20px);
+    /* 3列表示のための幅設定 */
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.curriculum-item img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.curriculum-item h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.curriculum-item p {
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+
+.delivery-time {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delivery-time button {
+    margin: 0 10px;
+}
+
+.delivery-time p {
+    margin: 0 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+
+
+
+
+
 /* General styles for the curriculum list */
 
 .flex-container {
@@ -21,6 +82,12 @@
     color: white;
     border: none;
     cursor: pointer;
+    display: inline-block;
+    /* ボタンをインラインブロック要素にする */
+    white-space: nowrap;
+    /* テキストの折り返しを防ぐ */
+    text-align: center;
+    /* テキストを中央揃えにする */
 }
 
 .grade-button:hover {

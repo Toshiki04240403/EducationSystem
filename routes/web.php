@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\TopController;
 // ユーザー用のルートをグループ化
 Route::prefix('user')->namespace('User')->name('user.')->group(function () {
     // カリキュラムリストへのルート
-    Route::get('/curriculums_list', [CurriculumController::class, 'index'])->name('curriculums.index');
+    Route::get('/curriculums_list', [CurriculumController::class, 'showCurriculumList'])->name('show.curriculum.list');
 });
 // 管理者用のルートをグループ化
 Route::prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
@@ -19,4 +19,4 @@ Route::prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
 
 // /topへのルートを追加
 Route::get('/top', [TopController::class, 'index'])->name('top.index');
-Route::get('/curriculums_list', [CurriculumController::class, 'index'])->name('curriculums.index');
+Route::get('/curriculums_list', [CurriculumController::class, 'showCurriculumList'])->name('show.curriculum.list');
