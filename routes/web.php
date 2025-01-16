@@ -20,3 +20,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// ユーザー画面
+Route::get('user/article/{id}', [ArticleController::class, 'showArticle'])->name('user.show.article');
