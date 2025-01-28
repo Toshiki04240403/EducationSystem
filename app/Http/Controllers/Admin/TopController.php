@@ -7,8 +7,8 @@ use App\Http\Controllers\Controller;
 class TopController extends Controller
 {
     // 管理者トップページの表示
-    public function index()
+    public function ShowTop()
     {
-        return view('admin.layouts.top');
+        return view('admin.top');
     }
 }

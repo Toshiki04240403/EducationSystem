@@ -36,11 +36,22 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
+    // 既存のガード設定...
+
+    'admin' => [
+        'driver' => 'session',
+        'provider' => 'admins',
     ],
+],
+
+'providers' => [
+    // 既存のプロバイダー設定...
+
+    'admins' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Admin::class,
+    ],
+],
 
     /*
     |--------------------------------------------------------------------------

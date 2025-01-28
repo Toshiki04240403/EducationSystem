@@ -1,4 +1,83 @@
 
+/* 登録ページのスタイル */
+.register-container {
+    max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        text-align: center;
+}
+
+.register-container h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.register-container p {
+    text-align: right;
+}
+
+.register-container .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.register-container label {
+    width: 30%;
+    margin-bottom: 0;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.register-container input {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.register-container .btn {
+    font-size: 2em;
+    width: 40%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.register-container .btn:hover {
+    background-color: #0056b3;
+}
+
+.alert {
+    text-align: left;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+
+
+
+
+
 /* curriculum-listのスタイル */
 .curriculum-list {
     display: flex;
