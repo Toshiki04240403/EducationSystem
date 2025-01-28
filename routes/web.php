@@ -29,6 +29,8 @@ Route::prefix('admin')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('admin.logout');
     Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('admin.register');
     Route::post('register', [RegisterController::class, 'register']);
-
-
+    Route::get('top', [TopController::class, 'index'])->name('admin.top')->middleware('auth:admin');
+    Route::get('curriclum_list', [CurriculumController::class, 'showCurriclumList'])->name('admin.curriclum_list')->middleware('auth:admin');
+    Route::get('article_list', [ArticleController::class, 'showArticleList'])->name('admin.article_list')->middleware('auth:admin');
+    Route::get('banners_edit', [BannerController::class, 'showBannerEdit'])->name('admin.banner_edit')->middleware('auth:admin');
 });

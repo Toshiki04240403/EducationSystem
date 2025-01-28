@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class TopController extends Controller
 {
-    // 管理者トップページの表示
-    public function ShowTop()
+    public function index()
     {
-        return view('admin.top');
+        $admin = Auth::guard('admin')->user();
+        return view('admin.top', compact('admin'));
     }
 }

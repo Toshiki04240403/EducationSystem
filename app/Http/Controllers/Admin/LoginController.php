@@ -18,12 +18,12 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('admin')->attempt($credentials)) {
-            return redirect()->intended(route('admin.dashboard'));
+            return redirect()->intended(route('admin.top'));
         }
 
-        return back()->withErrors([
-            'email' => 'メールアドレスまたはパスワードが正しくありません。',
-        ]);
+        return redirect()->route('admin.login')->withErrors([
+            'login_error' => 'メールアドレスまたは、パスワードに誤りがあります。',
+        ])->withInput($request->except('password'));
     }
 
     public function logout(Request $request)

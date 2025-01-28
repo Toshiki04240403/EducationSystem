@@ -7,16 +7,10 @@
     @vite(['resources/css/app.css'])
 </head>
 <body>
-    <topheader>
-        
-                <a href="{{ route('admin.index') }}" class="btn topbtn">授業管理</a>
-                <a href="/admin/users" class="btn topbtn">お知らせ管理</a>
-                <a href="/admin/settings" class="btn topbtn">バナー管理</a>
-                <a href="/logout" class="btn topbtn-logout">ログアウト</a>
-    </topheader>
-    <main>
-        <p>ユーザーネーム：</p>
-        <p>メールアドレス：</p>
-    </main>
+    @include('admin.layouts.app')
+    <div class="dashboard-container">
+        <h2>管理者ダッシュボード</h2>
+        <p>ユーザーネーム: {{ $admin->name }}</p>
+        <p>メールアドレス: {{ $admin->email }}</p>
 </body>
 </html>

@@ -8,7 +8,9 @@
 </head>
 <body>
     <div class="login-container">
+        <p><a href="{{ route('admin.register') }}">新規会員登録はこちら</a>
         <h2>管理画面ログイン</h2>
+        
         <form method="POST" action="{{ route('admin.login') }}">
             @csrf
             <div class="form-group">
@@ -21,13 +23,9 @@
             </div>
             <button type="submit" class="btn btn-primary">ログイン</button>
         </form>
-        @if ($errors->any())
+         @if ($errors->has('login_error'))
             <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+                {{ $errors->first('login_error') }}
             </div>
         @endif
     </div>
