@@ -5,6 +5,7 @@ use App\Http\Controllers\User\Auth\CurriculumController;
 use App\Http\Controllers\Admin\TopController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\RegisterController;
+use App\Http\Controllers\Admin\BannerController;
 
 // ユーザー用のルートをグループ化
 Route::prefix('user')->namespace('User')->name('user.')->group(function () {
@@ -29,8 +30,15 @@ Route::prefix('admin')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('admin.logout');
     Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('admin.register');
     Route::post('register', [RegisterController::class, 'register']);
-    Route::get('top', [TopController::class, 'index'])->name('admin.top')->middleware('auth:admin');
-    Route::get('curriclum_list', [CurriculumController::class, 'showCurriclumList'])->name('admin.curriclum_list')->middleware('auth:admin');
-    Route::get('article_list', [ArticleController::class, 'showArticleList'])->name('admin.article_list')->middleware('auth:admin');
-    Route::get('banners_edit', [BannerController::class, 'showBannerEdit'])->name('admin.banner_edit')->middleware('auth:admin');
+    Route::get('top', [TopController::class, 'showTop'])->name('show.top')->middleware('auth:admin');
+    Route::get('curriclum_list', [CurriculumController::class, 'showCurriclumList'])->name('admin.curriclum.list')->middleware('auth:admin');
+    Route::get('article_list', [ArticleController::class, 'showArticleList'])->name('admin.article.list')->middleware('auth:admin');
+    Route::get('banners_edit', [BannerController::class, 'showBannerEdit'])->name('admin.banner.edit')->middleware('auth:admin');
+    Route::delete('banners/{id}', [BannerController::class, 'delete'])->name('admin.banners.delete')->middleware('auth:admin');
+    Route::put('banners/{id}', [BannerController::class, 'update'])->name('admin.banners.update')->middleware('auth:admin');
+    Route::post('banners', [BannerController::class, 'store'])->name('admin.banners.store')->middleware('auth:admin');
+
+
+
+
 });

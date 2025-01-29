@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TopController extends Controller
 {
-    public function index()
+    public function showTop()
     {
         $admin = Auth::guard('admin')->user();
         return view('admin.top', compact('admin'));

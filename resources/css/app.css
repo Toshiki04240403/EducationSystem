@@ -1,3 +1,61 @@
+/* バナー管理ページのスタイル */
+.banners {
+    display: flex;
+    flex-direction: column;
+    /* 縦に並べる */
+    gap: 20px;
+}
+
+.banner {
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.banner img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.banner-actions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn-primary {
+    background-color: #007bff;
+}
+
+.btn-success {
+    background-color: #28a745;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+
 /* ヘッダーのスタイル */
 .header {
     background-color: #f8f9fa;

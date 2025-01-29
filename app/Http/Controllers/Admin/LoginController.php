@@ -18,7 +18,7 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('admin')->attempt($credentials)) {
-            return redirect()->intended(route('admin.top'));
+            return redirect()->intended(route('show.top'));
         }
 
         return redirect()->route('admin.login')->withErrors([
