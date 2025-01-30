@@ -16,8 +16,9 @@
                 <li><a href="/logout">ログアウト</a></li>
             </ul>
         </nav>
-    </header>
-    <a href="/back">←戻る</a>
+    </header> {{-- @include('admin.layouts.app') --}}
+    
+    <a href="{{ route('show.top') }}">←戻る</a>
 
         <div class="delivery-time">
             <button id="prevMonth">◀</button>

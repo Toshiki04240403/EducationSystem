@@ -20,26 +20,17 @@ class BannerController extends Controller
         $banner = Banner::findOrFail($id);
         Storage::delete($banner->image);
         $banner->delete();
-        
+        return redirect()->route('admin.banner.edit')->with('success', 'バナーが削除されました');
     }
-    public function update(Request $request, $id)
-    {
-        $banner = Banner::findOrFail($id);
-        if ($request->hasFile('image')) {
-            Storage::delete($banner->image);
-            $path = $request->file('image')->store('banner');
-            $banner->image = $path;
-            $banner->save();
-        }
-        
-    }
+
+    
 
     public function store(Request $request)
     {
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('banner');
+            $path = $request->file('image')->store('banners/image');
             Banner::create(['image' => $path]);
         }
-        
+        return redirect()->route('admin.banner.edit')->with('success', 'バナーが追加されました');
     }
 }

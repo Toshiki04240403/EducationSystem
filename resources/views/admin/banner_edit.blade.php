@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>バナー管理</title>
     @vite(['resources/css/app.css'])
+    <style>
+        .delete-icon {
+            cursor: pointer;
+            color: #dc3545;
+            font-size: 1.5em;
+        }
+    </style>
 </head>
 <body>
     @include('admin.layouts.app')
@@ -18,13 +25,12 @@
                     <form action="{{ route('admin.banners.delete', $banner->id) }}" method="POST" class="delete-form" style="display: inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="button" class="btn btn-danger delete-button">削除</button>
+                        <span class="delete-icon" onclick="this.closest('form').submit();">&times;</span>
                     </form>
                     <form action="{{ route('admin.banners.update', $banner->id) }}" method="POST" enctype="multipart/form-data" class="update-form" style="display: inline;">
                         @csrf
                         @method('PUT')
                         <input type="file" name="image" accept="image/*" class="image-input">
-                        <button type="button" class="btn btn-primary update-button">ファイルを追加</button>
                     </form>
                 </div>
             @endforeach
@@ -41,8 +47,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const deleteButtons = document.querySelectorAll('.delete-button');
-            const updateButtons = document.querySelectorAll('.update-button');
+            const deleteButtons = document.querySelectorAll('.delete-icon');
             const storeButton = document.querySelector('.store-button');
             const applyChangesButton = document.getElementById('applyChanges');
             const imageInputs = document.querySelectorAll('.image-input');
@@ -55,13 +60,6 @@
                 });
             });
 
-            updateButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const bannerDiv = this.closest('.banner');
-                    bannerDiv.classList.add('to-update');
-                });
-            });
-
             storeButton.addEventListener('click', function () {
                 const storeForm = this.closest('.store-form');
                 storeForm.classList.add('to-store');
@@ -69,14 +67,9 @@
 
             applyChangesButton.addEventListener('click', function () {
                 const bannersToDelete = document.querySelectorAll('.banner.to-delete .delete-form');
-                const bannersToUpdate = document.querySelectorAll('.banner.to-update .update-form');
                 const bannersToStore = document.querySelectorAll('.store-form.to-store');
 
                 bannersToDelete.forEach(form => {
-                    form.submit();
-                });
-
-                bannersToUpdate.forEach(form => {
                     form.submit();
                 });
 
