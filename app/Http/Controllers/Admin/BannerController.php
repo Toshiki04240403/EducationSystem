@@ -23,13 +23,23 @@ class BannerController extends Controller
         return redirect()->route('admin.banner.edit')->with('success', 'バナーが削除されました');
     }
 
-    
+    public function update(Request $request, $id)
+    {
+        $banner = Banner::findOrFail($id);
+        if ($request->hasFile('image')) {
+            Storage::delete($banner->image);
+            $path = $request->file('image')->store('public/banners/image');
+            $banner->image = str_replace('public/', '', $path); // パスを修正
+            $banner->save();
+        }
+        return redirect()->route('admin.banner.edit')->with('success', 'バナーが更新されました');
+    }
 
     public function store(Request $request)
     {
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('banners/image');
-            Banner::create(['image' => $path]);
+            $path = $request->file('image')->store('public/banners/image');
+            Banner::create(['image' => str_replace('public/', '', $path)]); // パスを修正
         }
         return redirect()->route('admin.banner.edit')->with('success', 'バナーが追加されました');
     }

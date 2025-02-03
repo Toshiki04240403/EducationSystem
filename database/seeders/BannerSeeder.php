@@ -14,15 +14,18 @@ class BannerSeeder extends Seeder
      */
     public function run()
     {
+
+        // 既存のデータを削除
+        DB::table('banners')->truncate();
         DB::table('banners')->insert([
             [
-                'image' => 'banner/sample1.jpg',
+                'image' => 'storage\app\public\banners\image\sample1.jpg',
             ],
             [
-                'image' => 'banner/sample2.jpg',
+                'image' => 'storage\app\public\banners\image\sample2.jpg',
             ],
             [
-                'image' => 'banner/sample3.jpg',
+                'image' => 'storage\app\public\banners\image\sample3.jpg',
             ],
         ]);
     }

@@ -11,6 +11,14 @@
             color: #dc3545;
             font-size: 1.5em;
         }
+        .add-icon {
+            cursor: pointer;
+            color: #28a745;
+            font-size: 2em;
+            display: block;
+            text-align: center;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -21,7 +29,7 @@
         <div class="banners">
             @foreach ($banners as $banner)
                 <div class="banner" data-banner-id="{{ $banner->id }}">
-                    <img src="{{ asset($banner->image) }}" alt="バナー画像" class="image-preview">
+                    <img src="{{ asset('storage/' . $banner->image) }}" alt="バナー画像" class="image-preview">
                     <form action="{{ route('admin.banners.delete', $banner->id) }}" method="POST" class="delete-form" style="display: inline;">
                         @csrf
                         @method('DELETE')
@@ -35,11 +43,11 @@
                 </div>
             @endforeach
         </div>
-        <div class="banner-actions">
+        <span class="add-icon" id="addBanner">＋</span>
+        <div class="banner-actions" id="newBannerFormContainer" style="display: none;">
             <form action="{{ route('admin.banners.store') }}" method="POST" enctype="multipart/form-data" class="store-form" style="display: inline;">
                 @csrf
                 <input type="file" name="image" accept="image/*" class="image-input">
-                <button type="button" class="btn btn-primary store-button">ファイル選択</button>
             </form>
         </div>
         <button id="applyChanges" class="btn btn-success">登録</button>
@@ -48,9 +56,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const deleteButtons = document.querySelectorAll('.delete-icon');
-            const storeButton = document.querySelector('.store-button');
             const applyChangesButton = document.getElementById('applyChanges');
             const imageInputs = document.querySelectorAll('.image-input');
+            const addBannerButton = document.getElementById('addBanner');
+            const newBannerFormContainer = document.getElementById('newBannerFormContainer');
 
             deleteButtons.forEach(button => {
                 button.addEventListener('click', function () {
@@ -60,21 +69,27 @@
                 });
             });
 
-            storeButton.addEventListener('click', function () {
-                const storeForm = this.closest('.store-form');
-                storeForm.classList.add('to-store');
-            });
-
             applyChangesButton.addEventListener('click', function () {
                 const bannersToDelete = document.querySelectorAll('.banner.to-delete .delete-form');
-                const bannersToStore = document.querySelectorAll('.store-form.to-store');
+                const bannersToUpdate = document.querySelectorAll('.banner .update-form');
+                const bannersToStore = document.querySelectorAll('.store-form');
 
                 bannersToDelete.forEach(form => {
                     form.submit();
                 });
 
+                bannersToUpdate.forEach(form => {
+                    const input = form.querySelector('.image-input');
+                    if (input.files.length > 0) {
+                        form.submit();
+                    }
+                });
+
                 bannersToStore.forEach(form => {
-                    form.submit();
+                    const input = form.querySelector('.image-input');
+                    if (input.files.length > 0) {
+                        form.submit();
+                    }
                 });
             });
 
@@ -96,6 +111,10 @@
                         reader.readAsDataURL(file);
                     }
                 });
+            });
+
+            addBannerButton.addEventListener('click', function () {
+                newBannerFormContainer.style.display = 'block';
             });
         });
     </script>
