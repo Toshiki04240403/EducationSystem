@@ -14,4 +14,9 @@ class Grade extends Model
 
     // マスアサインメント可能な属性
     protected $fillable = ['name'];
+    // Curriculumとのリレーションの設定
+    public function curriculums()
+    {
+        return $this->hasMany(Curriculum::class, 'grade_id');
+    }
 }

@@ -29,4 +29,10 @@ class Curriculum extends Model
     {
         return $this->hasMany(DeliveryTime::class, 'curriculums_id');
     }
+
+    // Gradeとのリレーションの設定
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class, 'grade_id');
+    }
 }

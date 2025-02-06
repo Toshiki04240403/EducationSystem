@@ -3,31 +3,40 @@
 namespace App\Http\Controllers\User\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Curriculum; // Curriculumモデルをインポート
-use Carbon\Carbon; // 日付操作のためにCarbonをインポート
+use App\Models\Curriculum;
+use Carbon\Carbon;
 use App\Models\Grade;
+use Illuminate\Http\Request;
 
 class CurriculumController extends Controller
 {
-    // 時間割ページの表示
+    /**
+     * Show the curriculum list.
+     *
+     * @return \Illuminate\View\
+     */
     public function showCurriculumList()
     {
-        // カリキュラムのリストを取得
-        $curriculums = Curriculum::all();
+        $currentDateTime = Carbon::now();
 
-        // カリキュラムと関連する配信時間を取得
-        $curriculums = Curriculum::with('deliveryTimes')->get();
-        
-       
-        // gradesテーブルからデータを取得
         $grades = Grade::all();
 
-        // ビューにデータを渡す
+        $curriculums = Curriculum::with(['deliveryTimes' => function ($query) use ($currentDateTime) {
+            $query->where(function ($query) use ($currentDateTime) {
+                $query->where('delivery_from', '<=', $currentDateTime)
+                      ->where('delivery_to', '>=', $currentDateTime);
+            });
+        }])->where(function ($query) use ($currentDateTime) {
+            $query->where('alway_delivery_flg', 1)
+                  ->orWhere(function ($query) use ($currentDateTime) {
+                      $query->where('alway_delivery_flg', 0)
+                            ->whereHas('deliveryTimes', function ($query) use ($currentDateTime) {
+                                $query->where('delivery_from', '<=', $currentDateTime)
+                                      ->where('delivery_to', '>=', $currentDateTime);
+                            });
+                  });
+        })->get();
+
         return view('user.layouts.curriculum_list', compact('curriculums','grades'));
     }
 }
-
-
-    
-
