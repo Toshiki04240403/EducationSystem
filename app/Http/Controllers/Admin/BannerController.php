@@ -37,10 +37,13 @@ class BannerController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('public/banners/image');
-            Banner::create(['image' => str_replace('public/', '', $path)]); // パスを修正
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('public/banners');
+                Banner::create(['image' => str_replace('public/', '', $path)]); // パスを修正
+            }
         }
+
         return redirect()->route('admin.banner.edit')->with('success', 'バナーが追加されました');
     }
 }
