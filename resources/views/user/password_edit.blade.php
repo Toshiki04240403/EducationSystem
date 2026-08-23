@@ -1,38 +1,49 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>パスワード変更</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <nav>
+@extends('user.layouts.app')
+
+@section('title', 'パスワード変更')
+
+@section('content')
+<div class="container">
+    <a href="{{ route('user.show.profile') }}" class="back">←戻る</a>
+    <h2>パスワード変更</h2>
+
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    @if($errors->any())
+        <div class="alert alert-danger">
             <ul>
-                <li><a href="#">時間割</a></li>
-                <li><a href="#">授業進捗</a></li>
-                <li><a href="#">プロフィール設定</a></li>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
             </ul>
-        </nav>
-        <div class="login-button">ログイン</div>
-    </header>
+        </div>
+    @endif
 
-    <main>
-        <button class="back-button">戻る</button>
-        <h2>パスワード変更</h2>
-        <form>
-            <label for="old-password">旧パスワード</label>
-            <input type="password" id="old-password" name="old-password">
+    <div class="form-container">
+        <form action="{{ route('user.update.password') }}" method="POST">
+            @csrf
 
-            <label for="new-password">新しいパスワード</label>
-            <input type="password" id="new-password" name="new-password">
+            <div class="form-group">
+                <label class="form-label">旧パスワード</label>
+                <input type="password" id="form-label" name="current_password" class="form-control" required>
+            </div>
 
-            <label for="new-password-confirm">新しいパスワード（確認）</label>
-            <input type="password" id="new-password-confirm" name="new-password-confirm">
+            <div class="form-group">
+                <label class="form-label">新パスワード</label>
+                <input type="password" id="form-label" name="new_password" class="form-control" required>
+            </div>
 
-            <button type="submit">登録</button>
+            <div class="form-group">
+                <label class="form-label">新パスワード確認</label>
+                <input type="password" id="form-label" name="new_password_confirmation" class="form-control" required>
+            </div>
+
+            <div class="form-submit">
+                <button type="submit" class="submit">登録</button>
+            </div>
         </form>
-    </main>
-</body>
-</html>
+    </div>
+</div>
+@endsection

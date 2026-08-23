@@ -12,18 +12,11 @@ return new class extends Migration
      * @return void
      */
     public function up()
-{
-    if (!Schema::hasTable('classes_clear_checks')) {
-        Schema::create('classes_clear_checks', function (Blueprint $table) {
-            $table->id();
-            $table->integer('users_id');
-            $table->integer('grade_id');
-            $table->tinyInteger('clear_flg');
-            $table->timestamps();
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('profile_image', 255)->nullable()->after('password');
         });
     }
-}
-
 
     /**
      * Reverse the migrations.
@@ -32,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classes_clear_checks');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('profile_image');
+        });
     }
 };

@@ -1,47 +1,58 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>プロフィール編集</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#">閉園時間</a></li>
-                <li><a href="#">授業スケジュール</a></li>
-                <li><a href="#">プロフィール設定</a></li>
-            </ul>
-        </nav>
-        <div class="login-button">ログイン</div>
-    </header>
+@extends('user.layouts.app')
 
-    <main>
-        <button class="back-button">戻る</button>
-        <h2>プロフィール変更</h2>
-        <div class="profile-image">
-            <img src="profile.png" alt="プロフィール画像">
-            <label for="profile-image-input">ファイルを選択</label>
-            <input type="file" id="profile-image-input" style="display: none;">
-        </div>
-        <form>
-            <label for="username">ユーザーネーム</label>
-            <input type="text" id="username" name="username">
+@section('title', 'プロフィール変更')
 
-            <label for="kana">カナ</label>
-            <input type="text" id="kana" name="kana">
+@section('content')
+<div class="container">
+    <a href="#" class="back">← 戻る</a>
+    <h2>プロフィール変更</h2>
 
-            <label for="email">メールアドレス</label>
-            <input type="email" id="email" name="email">
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
-            <label for="password">パスワード</label>
-            <input type="password" id="password" name="password">
-            <button type="button">パスワードを変更する</button>
+    @if(session('danger'))
+        <div class="alert alert-success">{{ session('danger') }}</div>
+    @endif
 
-            <button type="submit">登録</button>
+    <div class="form-container">
+        <form action="{{ route('user.update.profile') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('put')
+            <div class="profile-container">
+                <img src="{{ asset($user->profile_image) }}" alt="プロフィール画像">
+                <div class="profile-inputs">
+                    <label for="profile_image" class="profile-label">プロフィール画像</label>
+                    <input type="file" id="profile_image" name="profile_image" class="hidden-form-input">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="name" class="form-label">ユーザーネーム</label>
+                <input type="text" id="name" name="name" class="form-control" autocomplete="name">
+            </div>
+
+            <div class="form-group">
+                <label for="name_kana" class="form-label">カナ</label>
+                <input type="text" id="name_kana" name="name_kana" class="form-control" autocomplete="name">
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">メールアドレス</label>
+                <input type="email" id="email" name="email" class="form-control" autocomplete="email">
+            </div>
+
+            <div class="form-password">
+                <p class="form-label">パスワード</p>
+                <a class="password-edit-form" href="{{ route('user.show.password.edit') }}">パスワードを変更する</a>
+            </div>
+            <div class="form-submit">
+                <button type="submit" class="submit">登録</button>
+            </div>
         </form>
-    </main>
-</body>
-</html>
+    </div>
+</div>
+@endsection
+
+
+<!-- {{ old('name', $user->name) }} 　{{ old('name_kana', $user->name_kana) }}　{{ old('email', $user->email) }}-->

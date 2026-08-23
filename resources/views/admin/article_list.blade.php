@@ -1,42 +1,36 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>お知らせ一覧</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#">業務管理</a></li>
-                <li><a href="#">お知らせ管理</a></li>
-                <li><a href="#">パートナー管理</a></li>
-            </ul>
-        </nav>
-        <div class="login-button">ログアウト</div>
-    </header>
+@extends('admin.layouts.app')
 
+@section('title', 'お知らせ変更')
+
+@section('content')
     <main>
-        <button class="back-button">戻る</button>
-        <h2>お知らせ一覧</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>投稿日時</th>
-                    <th>タイトル</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>2023年7月21日</td>
-                    <td>授業内容変更についてのお知らせ</td>
-                    <td><button class="edit-button">変更する</button> <button class="delete-button">削除</button></td>
-                </tr>
-                </tbody>
-        </table>
+        <div class="container">
+            <a href="" class="back">←戻る</a>
+            <div class="">
+                <h1>お知らせ一覧</h1>
+                <button class="creat_button">新規登録</button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>投稿日時</th>
+                        <th>タイトル</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2023年7月21日</td>
+                        <td>授業内容変更についてのお知らせ</td>
+                        <td>
+                            <button class="edit-button">変更する</button> 
+                            <button class="delete-button">削除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+            </table>
+        </div>
     </main>
 </body>
-</html>
+@endsection

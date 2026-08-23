@@ -12,13 +12,16 @@ return new class extends Migration
      * @return void
      */
     public function up()
-    {
+{
+    if (!Schema::hasTable('grades')) {
         Schema::create('grades', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->timestamps();
         });
     }
+}
+
 
     /**
      * Reverse the migrations.

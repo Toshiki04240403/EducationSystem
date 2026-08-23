@@ -11,8 +11,8 @@
         </header>
 
     <main>
-        <button class="back-button">戻る</button>
-        <h2>お知らせ変更</h2>
+        <a href="" class="back-button">戻る</a>
+        <h1>お知らせ変更</h1>
         <form>
             <label for="post_date">投稿日時</label>
             <input type="text" id="post_date" name="post_date">

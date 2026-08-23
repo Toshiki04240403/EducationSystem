@@ -2,13 +2,15 @@
 
 @section('title', 'ユーザーお知らせ')
 
-@section('contents')
+@section('content')
     <main>
         <div class="container">
             <a href="#" class="back">← 戻る</a>
-            <h2>2023年7月21日</h2>
-            <h1>お知らせタイトル</h1>
-            <p>お知らせの本文がここに入ります。テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>
+            <div class="article-container">
+                <p class="article-date">{{ $article->formatted_posted_date }}</p>
+                <h1 class="article-title">{{ $article->title }}</h1>
+                <p class="article-text">{{ $article->article_contents }}</p>
+            </div>
         </div>
     </main>
 @endsection

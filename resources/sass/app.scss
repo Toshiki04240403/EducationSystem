@@ -6,3 +6,211 @@
 
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+
+
+// 共通
+
+.back {
+  color: black;
+  text-decoration: none;
+}
+
+.submit {
+  all: unset;
+  background-color: #F26B4A;
+  border: none;
+  border-radius: 0;
+  color: white;
+  display: inline-block;
+  font-size: 15px;
+  text-align: center;
+  padding: 0 20px;
+  width: 110px;
+}
+
+
+// ユーザー進捗画面
+
+.clear {
+  color: red;
+  display: inline-block;
+  margin: 0px 5px;
+}
+
+.no-clear {
+  background: transparent !important;
+  border: none !important;
+  color: transparent !important;
+}
+
+.hidden-clear {
+  visibility: hidden;
+}
+
+.curriculum-title {
+  all:unset;
+}
+
+.grade {
+  border: 1px solid black;
+  border-radius: 10px;;
+  color: white;
+  text-align: center;
+  width: 75px;
+}
+
+.grade-container {
+  display: grid;
+  flex-wrap: wrap;
+  gap: 30px;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: space-between;
+  margin: 20px 50px;
+  width: 50%;
+}
+
+.grade-wrapper {
+  height: 200px;
+}
+
+img {
+  height: 100px;
+  object-fit: cover;
+  width: 100px;
+}
+
+.user-container {
+  display: flex;
+  align-items: flex-end;
+}
+
+.user-grade {
+  background-color: aqua;
+  border: 1px solid black;
+  border-radius: 5px;;
+  color: white;
+  display: inline-block;
+  font-size: 15px;
+  padding: 5px;
+  text-align: center;
+  width: 125px;
+}
+
+/* 小学1〜6年生: 水色 */
+.elementary {
+  background-color: #89E5F5;
+}
+
+/* 中学1〜3年生: 青 */
+.junior-high {
+  background-color: #77E5D4;
+}
+
+/* 高校1〜3年生: 緑 */
+.high-school {
+  background-color: #94D058;
+}
+
+.grade-container {
+  display: grid;
+}
+
+// ユーザープロフィール画面
+
+.form-container {
+  margin: 20px 50px;
+  width: 50%;
+}
+
+.form-control {
+  all: unset;
+  border: 1px solid gray;
+  flex: 1;
+  margin-right: 30px;
+  padding: 3px;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.form-input {
+  padding: 5px;
+  font-size: 14px;
+}
+
+.form-label {
+  width: 150px;
+}
+
+.form-password {
+  display: flex;
+  align-items: center;
+}
+
+.form-submit {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+input[type="file"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  color: transparent;
+}
+
+input.form-control {
+  width: 100%;
+}
+
+.password-edit-form {
+  border: 1px solid gray;
+  color: black;
+  padding: 2px;
+  text-decoration: none;
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.profile-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.profile-label {
+  font-size: 20px;
+}
+
+
+// ユーザーお知らせ画面
+
+.article-container {
+  margin: 50px;
+  width: 50%;
+}
+
+.article-text {
+  margin-top: 20px;
+}
+
+// 管理者画面
+
+// 管理者お知らせ一覧画面
+
