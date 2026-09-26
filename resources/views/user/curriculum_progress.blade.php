@@ -37,23 +37,50 @@
                 '高校1年生', '高校2年生', '高校3年生' => 'high-school',
                 default => '',
             };
+
+            // 2. 学年ID（または学年の並び順 order 等）を比較して、ユーザーの現在の学年より上か判定
+                // ※ $grade->id や $grade->order など、DBの学年順序を表すカラムと比較してください
+                $isFutureGrade = $grade->id > $userGrade->id;
+
         @endphp
 
         <div class="grade-wrapper">
                 <p class="grade {{ $gradeClass }}">{{ $grade->name }}</p>
-                    @foreach ($grade->curriculums as $curriculum)
-                        <div class="progress-item">
-                            @if ($curriculum->clearFlg)
-                                <span class="clear">受講済</span>
-                            @else
-                                <span class="clear no-clear">受講済</span>
-                            @endif
-                            <button class="curriculum-title" @if ($curriculum->isDisabled) disabled @endif>
+
+            @php
+                $shouldDisable = false;
+            @endphp
+
+                @foreach ($grade->curriculums as $curriculum)
+
+                    <div class="progress-item">
+
+                        @if ($curriculum->clearFlg)
+                            <span class="clear">受講済</span>
+                        @else
+                            <span class="clear no-clear">受講済</span>
+                        @endif
+
+                        @if ($curriculum->isDisabled)
+                            <button class="curriculum-title progress-item-button" disabled>
                                 <p>{{ $curriculum->title }}</p>
                             </button>
-                        </div>
-                    @endforeach
+                        @else
+                            <a href="#" class="curriculum-title progress-item-button">
+                                <p>{{ $curriculum->title }}</p>
+                            </a>
+                        @endif
+
+                    </div>
+
+                @endforeach
         </div>
+
+            @php
+                if (!$curriculum->clearFlg) {
+                    $shouldDisable = true;
+                }
+            @endphp
     
         @endforeach
     </div>

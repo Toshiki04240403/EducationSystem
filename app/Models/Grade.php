@@ -21,12 +21,6 @@ class Grade extends Model
         return $this->hasMany(ClassesClearCheck::class, 'grade_id', 'id');
     }
 
-    //public function curriculums() {
-        //return $this->hasMany(Curriculum::class, 'grade_id', 'id');
-    //}
-
-
-
     public function getGradesName() {
         $getGradesName = DB::table('grades')->get();
 
@@ -42,10 +36,7 @@ class Grade extends Model
         return $getGradeCurriculums;
     }
 
-// この学年が持つカリキュラムは何か (一対多)
-public function curriculums() {
-    return $this->hasMany(Curriculum::class)->orderBy('id'); // ID順で並び替え
-}
-
-
+    public function curriculums() {
+        return $this->hasMany(Curriculum::class)->orderBy('id'); // ID順で並び替え
+    }
 }

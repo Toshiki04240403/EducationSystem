@@ -24,22 +24,60 @@ class ProfileController extends Controller
     //ユーザー情報更新
     public function updateProfileForm(Request $request) {
         
-        $user = User::find(Auth::id());
+        /** @var \App\Models\User $user */
+
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect()->route('login')->with('danger', 'ログインしてください。');
+        }
 
         $request->validate([
-            'name' => 'nullable|string|max:255',
-            'name_kana' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255|unique:users,email,' . $user->id,
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'name' => [ 
+                'required',
+                'string',
+                'max:255',
+            ],
+
+            'name_kana' => [ 
+                'required',
+                'string',
+                'max:255',
+            ],
+
+            'email' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z0-9@._-]+$/',
+            ],
+
+            'profile_image' => [
+                'nullable',
+                'image',
+                'mimes:jpeg,png,jpg,gif',
+            ]
+        ], [
+            'name.required' => 'ユーザーネームは必須です。',
+            'name.max' => 'ユーザーネームは255文字以内で入力してください。',
+            'name_kana.required' => 'カナは必須です。',
+            'name_kana.max' => 'カナは255文字以内で入力してください。',
+            'email.required' => 'メールアドレスは必須です。',
+            'email.email' => '正しいメールアドレスの形式で入力してください。',
+            'email.regex' => 'メールアドレスは半角英数字・標準記号（@ . _ -）のみ使用できます。',
+            'email.unique' => 'このメールアドレスは既に登録されています。',
+            'email.max' => 'メールアドレスは255文字以内で入力してください。',
         ]);
 
         DB::beginTransaction();
 
+        $uploadedNewImage = null;
+
         try {
                 $data = [
-                    'name' => $request->filled('name') ? $request->input('name') : $user->name,
-                    'name_kana' => $request->filled('name_kana') ? $request->input('name_kana') : $user->name_kana,
-                    'email' => $request->filled('email') ? $request->input('email') : $user->email,
+                    'name' => $request->input('name'),
+                    'name_kana' => $request->input('name_kana'),
+                    'email' => $request->input('email'),
                 ];
 
                 if ($request->hasFile('profile_image')) {
@@ -65,11 +103,15 @@ class ProfileController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            session()->flash('danger', '更新に失敗しました: ' . $e->getMessage()); // エラーメッセージを表示
+
+            if ($uploadedNewImage && Storage::exists($uploadedNewImage)) {
+                Storage::delete($uploadedNewImage);
+            }
+
+            session()->flash('danger', '更新に失敗しました: ' . $e->getMessage());
             return back();
         }
     }
-
 
 // パスワード変更
     // パスワード画面表示
@@ -81,6 +123,8 @@ class ProfileController extends Controller
 
      //パスワード更新
     public function updatePassword(Request $request) {
+
+        /** @var \App\Models\User $user */
 
         $user = User::find(Auth::id());
 

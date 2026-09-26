@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 class Article extends Model
 {
@@ -20,6 +20,11 @@ class Article extends Model
     ];
 
     public function getFormattedPostedDateAttribute() {
+
+        if( !$this->posted_date ) {
+            return '';
+        }
+
         return Carbon::parse($this->posted_date)->format('Y年m月d日');
     }
 

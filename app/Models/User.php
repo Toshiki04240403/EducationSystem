@@ -21,6 +21,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $table = 'users';
+    
     protected $fillable = [
         'name',
         'name_kana',
@@ -53,41 +56,22 @@ class User extends Authenticatable
         return $this->hasMany(ClassesClearCheck::class);
     }
 
-    //public function curriculumProgress() {
-        //return $this->hasMany(CurriculumProgress::class, 'users_id', 'id');
-    //}
-
-    //public function grade() {
-        //return $this->belongsTo(Grade::class, 'grade_id', 'id');
-    //}
-
-// 現在の学年 (多対一)
 public function grade() {
-    return $this->belongsTo(Grade::class); // デフォルトでは 'grade_id' を使用
+    return $this->belongsTo(Grade::class);
 }
 
-// ユーザーが完了した（または進捗中の）カリキュラム（多対多）
 public function curriculumsProgress() {
     return $this->belongsToMany(Curriculum::class, 'curriculum_progress', 'users_id', 'curriculums_id')
-                // 中間テーブルのカラムも取得可能にする
                 ->withPivot('clear_flg');
 }
 
-// 完了済みのカリキュラムのみを取得するヘルパーリレーション
 public function completedCurriculums() {
     return $this->curriculumsProgress()->wherePivot('clear_flg', 1);
 }
 
-
-
-
-
-
     public function getProfileImageUrlAttribute() {
     return $this->profile_image ? asset('storage/images/profile/' . $this->profile_image) : asset('default-avatar.png');
     }
-
-
 
     public function getUser() {
     $user = Auth::user();
@@ -122,15 +106,14 @@ public function completedCurriculums() {
         ];
     }
 
-    public function updateProfile($data) {
-        DB::table('users')
-            ->where('id', $this->id)
-            ->update([
-                'name' => $data['name'],
-                'name_kana' => $data['name_kana'],
-                'email' => $data['email'],
-                'profile_image' => $data['profile_image']
-            ]);
+    public function updateProfile(array $data) {
+
+        return $this->update([
+            'name' => $data['name'],
+            'name_kana' => $data['name_kana'],
+            'email' => $data['email'],
+            'profile_image' => $data['profile_image'] ?? $this->profile_image,
+        ]);
     }
 
     public function updatePassword($data) {

@@ -14,3 +14,5 @@
         </div>
     </main>
 @endsection
+
+{{-- {{ route('user.show.top') }}  backのURLに設定予定 --}}

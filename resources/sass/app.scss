@@ -211,6 +211,125 @@ input.form-control {
 }
 
 // 管理者画面
+//共通
+
+.back {
+  padding-bottom: 50px;
+}
+
+.create_button,
+.edit-button,
+.delete-button {
+  border-radius: 6px;        /* 角丸 */
+  border: none;              /* 枠線を消す */
+  text-decoration: none;
+  padding: 5px 20px;         /* 上下左右の余白 */
+}
 
 // 管理者お知らせ一覧画面
+
+.news_list,
+.news_edit {
+  margin: 5px 0;
+}
+// 以下Gemini
+/* テーブル全体の基本レイアウト */
+.news-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.news-table th, 
+.news-table td {
+  padding: 10px;
+  vertical-align: middle;
+}
+
+/* 投稿日時列：幅を固定し、日付の改行を防ぐ */
+.col-date {
+  width: 140px;
+  white-space: nowrap;
+  color: #666;
+}
+
+/* 新規登録ボタンのスタイル */
+.create_button,
+.edit-button {
+  background-color: #0E9499;
+  color: #ffffff;
+}
+
+.delete-button {
+  background: #f00;
+  color: #ffffff;
+}
+
+// 管理者お知らせ変更画面
+
+.post_date, .title, .body {
+  margin: 15px;
+}
+
+.register_button {
+  background-color: #666;
+  color: #ffffff;
+  margin: 20px 200px;
+  padding: 0 30px;
+}
+
+//　下記Gemini
+
+/* 親要素をFlex配置にして縦中央に揃える */
+.post_date,
+.title,
+.body {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px; /* 各行の間隔 */
+}
+
+/* テキストエリアのときだけラベルを上揃えにする */
+.body {
+  align-items: flex-start;
+}
+
+/* ラベルの幅を統一することで、入力欄の左端が綺麗に揃う */
+.post_date label,
+.title label,
+.body label {
+  width: 80px; /* 必要に応じて調整してください */
+  flex-shrink: 0; /* ラベルが潰れるのを防ぐ */
+}
+
+/* 入力欄の横幅を揃える */
+.post_date input,
+.title input,
+.body textarea {
+  width: 300px; /* 入力欄の幅 */
+  box-sizing: border-box;
+}
+
+.col-actions {
+  display: flex;
+  align-items: center;    /* 上下の位置を中央揃えにする */
+  justify-content: flex-start; /* 左右の位置を中央揃えにする（左寄せにする場合は flex-start） */
+  gap: 8px;               /* ボタン同士の間隔（お好みで調整） */
+}
+
+
+
+a.curriculum-title {
+  text-decoration: none; /* 下線を消す */
+  display: inline-block; /* ボタンとしての領域を保つ */
+}
+
+.progress-item-button {
+  cursor: pointer;
+}
+
+/* --- disabled（押下不可）時のスタイル（グレーアウト） --- */
+.progress-item-button:disabled {
+  color: #a0a0a0;            /* 薄いグレーの文字色 */
+}
 

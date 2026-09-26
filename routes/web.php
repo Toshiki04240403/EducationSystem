@@ -46,8 +46,10 @@ Route::prefix('user')->namespace('User')->name('user.')->group(function () {
     Route::get('progress', [ProgressController::class, 'showProgress'])->name('show.progress'); //進捗ページ
 });
 
+// 管理者画面
 Route::prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
     Route::get('article_list', [AdminArticleController::class, 'showArticleList'])->name('show.article.list'); //管理お知らせページ
+    Route::delete('/admin/article/{id}', [AdminArticleController::class, 'destroyArticle'])->name('destroy.article');
 
     Route::get('article_create', [AdminArticleController::class, 'showArticleCreate'])->name('show.article.create');
 });

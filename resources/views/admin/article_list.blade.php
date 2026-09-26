@@ -1,34 +1,40 @@
 @extends('admin.layouts.app')
 
-@section('title', 'お知らせ変更')
+@section('title', 'お知らせ一覧')
 
 @section('content')
     <main>
         <div class="container">
-            <a href="" class="back">←戻る</a>
-            <div class="">
+            <a href="" class="back">← 戻る</a>
+            <div class="news_list">
                 <h1>お知らせ一覧</h1>
-                <button class="creat_button">新規登録</button>
+                <a href="{{ route('admin.show.article.create') }}" class="create_button">新規登録</a>
             </div>
 
-            <table>
+            <table class="news-table">
                 <thead>
                     <tr>
-                        <th>投稿日時</th>
-                        <th>タイトル</th>
-                        <th></th>
+                        <th class="col-date">投稿日時</th>
+                        <th class="col-title">タイトル</th>
+                        <th class="col-actions"></th>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($articles as $article)
                     <tr>
-                        <td>2023年7月21日</td>
-                        <td>授業内容変更についてのお知らせ</td>
-                        <td>
-                            <button class="edit-button">変更する</button> 
-                            <button class="delete-button">削除</button>
+                        <td class="col-date">{{ $article->formatted_posted_date }}</td>
+                        <td class="col-title">{{ $article->title }}</td>
+                        <td class="col-actions">
+                            <button class="edit-button">変更する</button>
+                            <form action="{{ route('admin.destroy.article', $article->id) }}" method="POST">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="delete-button">削除</button>
+                            </form>
                         </td>
                     </tr>
-                    </tbody>
+                    @endforeach
+                </tbody>
             </table>
         </div>
     </main>

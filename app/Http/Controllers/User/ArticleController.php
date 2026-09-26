@@ -9,7 +9,7 @@ use App\Models\Article;
 class ArticleController extends Controller
 {
   public function showArticle($id) {
-    $article = Article::find($id);
+    $article = Article::findorFail($id);
 
     return view('user.article', compact('article'));
   }

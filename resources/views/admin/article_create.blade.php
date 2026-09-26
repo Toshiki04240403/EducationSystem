@@ -6,21 +6,31 @@
   <main>
     <div class="container">
 
-      <a href="" class="back">戻る</a>
-      <h1>お知らせ変更</h1>
+      <a href="{{ route('admin.show.article.list') }}" class="back">← 戻る</a>
+      <div class="news_edit">
+        <h1>お知らせ変更</h1>
+      </div>
 
       <div class="">
         <form method="POST">
-          <label for="post_date">投稿日時</label>
-          <input type="text" id="post_date" name="post_date">
+          <div class="post_date">
+            <label for="post_date">投稿日時</label>
+            <input type="text" id="post_date" name="post_date">
+          </div>
 
-          <label for="title">タイトル</label>
-          <input type="text" id="title" name="title">
+          <div class="title">
+            <label for="title">タイトル</label>
+            <input type="text" id="title" name="title">
+          </div>
 
-          <label for="body">本文</label>
-          <textarea id="body" name="body"></textarea>
+          <div class="body">
+            <label for="body">本文</label>
+            <textarea id="body" name="body"></textarea>
+          </div>
 
-          <button type="submit">登録</button>
+          <div>
+            <button class="register_button" type="submit">登録</button>
+          </div>
         </form>
       </div>
 

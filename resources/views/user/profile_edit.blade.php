@@ -12,7 +12,17 @@
     @endif
 
     @if(session('danger'))
-        <div class="alert alert-success">{{ session('danger') }}</div>
+        <div class="alert alert-danger">{{ session('danger') }}</div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     <div class="form-container">
@@ -29,17 +39,17 @@
 
             <div class="form-group">
                 <label for="name" class="form-label">ユーザーネーム</label>
-                <input type="text" id="name" name="name" class="form-control" autocomplete="name">
+                <input type="text" id="name" name="name" class="form-control" value="{{ old('name', $user->name) }}" autocomplete="name">
             </div>
 
             <div class="form-group">
                 <label for="name_kana" class="form-label">カナ</label>
-                <input type="text" id="name_kana" name="name_kana" class="form-control" autocomplete="name">
+                <input type="text" id="name_kana" name="name_kana" class="form-control" value="{{ old('name_kana', $user->name_kana) }}" autocomplete="name">
             </div>
 
             <div class="form-group">
                 <label for="email" class="form-label">メールアドレス</label>
-                <input type="email" id="email" name="email" class="form-control" autocomplete="email">
+                <input type="text" id="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" autocomplete="email">
             </div>
 
             <div class="form-password">
@@ -55,4 +65,4 @@
 @endsection
 
 
-<!-- {{ old('name', $user->name) }} 　{{ old('name_kana', $user->name_kana) }}　{{ old('email', $user->email) }}-->
+{{-- {{ route('user.show.top') }}  backのURLに設定予定 --}}
