@@ -40,3 +40,18 @@ class Grade extends Model
         return $this->hasMany(Curriculum::class)->orderBy('id'); // ID順で並び替え
     }
 }
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Grade extends Model
+{
+    protected $table = 'grades'; // テーブル名
+    protected $fillable = ['grade', 'title', 'thumbnail', 'delivery_from', 'delivery_to'];
+
+    public function grade()
+{
+    return $this->belongsTo(Grade::class);
+}
+
+}
