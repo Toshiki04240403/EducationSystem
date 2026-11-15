@@ -25,7 +25,7 @@
                         <td class="col-date">{{ $article->formatted_posted_date }}</td>
                         <td class="col-title">{{ $article->title }}</td>
                         <td class="col-actions">
-                            <button class="edit-button">変更する</button>
+                            <a href="{{ route('admin.show.article.edit', $article->id) }}" class="edit-button">変更する</a>
                             <form action="{{ route('admin.destroy.article', $article->id) }}" method="POST">
                                 @csrf
                                 @method('delete')

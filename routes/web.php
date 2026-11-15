@@ -26,7 +26,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // ユーザー画面
 Route::prefix('user')->namespace('User')->name('user.')->group(function () {
     Route::get('auth/login', [LoginController::class, 'showLoginForm'])->name('user.login');
-    Route::post('auth/login', [LoginController::class, 'login'])->name('login.post');
+    Route::post('user/auth/login', [LoginController::class, 'login'])->name('login.post');
     Route::get('auth/register', [RegisterController::class, 'showRegistrationForm'])->name('user.register');
     Route::post('auth/register', [RegisterController::class, 'register'])->name('user.register.post');
 
@@ -47,12 +47,11 @@ Route::prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
     Route::delete('/admin/article/{id}', [AdminArticleController::class, 'destroyArticle'])->name('destroy.article');
 
     Route::get('article_create', [AdminArticleController::class, 'showArticleCreate'])->name('show.article.create');
-});
-// 認証ルート
-Auth::routes();
+    Route::post('article_create', [AdminArticleController::class, 'storeArticle'])->name('article.store'); 
 
-// ホーム画面
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('article_edit/{id}', [AdminArticleController::class, 'showArticleEdit'])->name('show.article.edit');
+    Route::put('article_update/{id}', [AdminArticleController::class, 'updateArticle'])->name('article.update');
+});
 
 // 管理者用のルート設定
 Route::prefix('admin')->name('admin.')->group(function () {

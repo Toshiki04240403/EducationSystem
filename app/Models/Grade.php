@@ -10,9 +10,10 @@ class Grade extends Model
 {
     use HasFactory;
 
+    protected $table = 'grades'; // テーブル名（必要に応じて）
     protected $fillable = ['name'];
 
-//リレーション
+    // リレーション
     public function user() {
         return $this->belongsTo(User::class, 'grade_id', 'id');
     }
@@ -21,6 +22,11 @@ class Grade extends Model
         return $this->hasMany(ClassesClearCheck::class, 'grade_id', 'id');
     }
 
+    public function curriculums() {
+        return $this->hasMany(Curriculum::class)->orderBy('id'); // ID順で並び替え
+    }
+
+    // 独自メソッド
     public function getGradesName() {
         $getGradesName = DB::table('grades')->get();
 
@@ -35,23 +41,4 @@ class Grade extends Model
     
         return $getGradeCurriculums;
     }
-
-    public function curriculums() {
-        return $this->hasMany(Curriculum::class)->orderBy('id'); // ID順で並び替え
-    }
-}
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-
-class Grade extends Model
-{
-    protected $table = 'grades'; // テーブル名
-    protected $fillable = ['grade', 'title', 'thumbnail', 'delivery_from', 'delivery_to'];
-
-    public function grade()
-{
-    return $this->belongsTo(Grade::class);
-}
-
 }
