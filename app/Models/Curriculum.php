@@ -8,29 +8,33 @@ class Curriculum extends Model
 {
     use HasFactory;
 
-    // テーブル名を明示
     protected $table = 'curriculums';
 
-    // 一括代入可能な属性
     protected $fillable = [
-        'title', 
-        'thumbnail', 
-        'description', 
-        'video_url', 
-        'alway_delivery_flg', 
-        'grade_id'
+        'title',
+        'thumbnail',
+        'description',
+        'video_url',
+        'alway_delivery_flg',
+        'grade_id',
     ];
 
-    
-    public function grade()
-    {
-        return $this->belongsTo(Grade::class, 'grade_id');
+//リレーション
+    public function grade() {
+        return $this->belongsTo(Grade::class);
     }
 
     public function deliveryTimes()
     {
-        return $this->hasMany(DeliveryTime::class, 'curriculums_id'); // 修正点: 外部キー名の見直し
+        return $this->hasMany(DeliveryTime::class, 'curriculums_id');
+    }
+
+    public function usersProgress() {
+        return $this->belongsToMany(User::class, 'curriculum_progress', 'curriculums_id', 'users_id')
+                    ->withPivot('clear_flg'); 
     }
     
-    
+    public function curriculumProgress() {
+        return $this->hasMany(CurriculumProgress::class, 'curriculums_id', 'id');
+    }
 }

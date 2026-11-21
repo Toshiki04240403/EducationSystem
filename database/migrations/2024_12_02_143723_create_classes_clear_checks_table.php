@@ -12,7 +12,8 @@ return new class extends Migration
      * @return void
      */
     public function up()
-    {
+{
+    if (!Schema::hasTable('classes_clear_checks')) {
         Schema::create('classes_clear_checks', function (Blueprint $table) {
             $table->id();
             $table->integer('users_id');
@@ -21,6 +22,8 @@ return new class extends Migration
             $table->timestamps();
         });
     }
+}
+
 
     /**
      * Reverse the migrations.
