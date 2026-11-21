@@ -10,11 +10,23 @@ class Curriculum extends Model
 
     protected $table = 'curriculums';
 
-    protected $fillable = ['title', 'grade_id'];
+    protected $fillable = [
+        'title',
+        'thumbnail',
+        'description',
+        'video_url',
+        'alway_delivery_flg',
+        'grade_id',
+    ];
 
 //リレーション
     public function grade() {
         return $this->belongsTo(Grade::class);
+    }
+
+    public function deliveryTimes()
+    {
+        return $this->hasMany(DeliveryTime::class, 'curriculums_id');
     }
 
     public function usersProgress() {

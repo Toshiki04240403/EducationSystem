@@ -10,12 +10,12 @@ class Grade extends Model
 {
     use HasFactory;
 
-    protected $table = 'grades'; // テーブル名（必要に応じて）
-    protected $fillable = ['name'];
+    protected $table = 'grades';
+    protected $fillable = ['grade', 'title', 'thumbnail', 'delivery_from', 'delivery_to'];
 
     // リレーション
-    public function user() {
-        return $this->belongsTo(User::class, 'grade_id', 'id');
+    public function users() {
+        return $this->hasMany(User::class, 'grade_id', 'id');
     }
 
     public function classes_clear_checks() {
@@ -24,6 +24,10 @@ class Grade extends Model
 
     public function curriculums() {
         return $this->hasMany(Curriculum::class)->orderBy('id'); // ID順で並び替え
+    }
+
+    public function grade() {
+        return $this->belongsTo(Grade::class);
     }
 
     // 独自メソッド
