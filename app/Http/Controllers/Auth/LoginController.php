@@ -52,17 +52,14 @@ class LoginController extends Controller
 
         $remember = $request->boolean('remember');
 
-        // 管理者（adminsテーブル / adminガード）を確認
         $admin = Admin::where('email', $credentials['email'])->first();
         if ($admin && Hash::check($credentials['password'], $admin->password)) {
             Auth::guard('admin')->login($admin, $remember);
             $request->session()->regenerate();
 
-            // 遷移したい管理者画面に合わせて変更してください
             return redirect()->intended('/admin/article_list');
         }
 
-        // 一般ユーザー（usersテーブル / webガード）を確認
         $user = User::where('email', $credentials['email'])->first();
         if ($user && Hash::check($credentials['password'], $user->password)) {
             Auth::guard('user')->login($user, $remember);
